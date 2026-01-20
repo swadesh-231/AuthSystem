@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: AuthSystem
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth
+    username: root
+    password: 45678432
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
