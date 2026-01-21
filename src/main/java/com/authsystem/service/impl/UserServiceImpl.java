@@ -1,4 +1,4 @@
-package com.authsystem.service;
+package com.authsystem.service.impl;
 
 import com.authsystem.dto.UserDto;
 import com.authsystem.entity.User;
@@ -6,6 +6,7 @@ import com.authsystem.entity.enums.Provider;
 import com.authsystem.exception.BadRequestException;
 import com.authsystem.exception.ResourceNotFoundException;
 import com.authsystem.repository.UserRepository;
+import com.authsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,6 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, Long userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        if (userDto.getEmail() != null) {
-            existingUser.setEmail(userDto.getEmail());
-        }
         if (userDto.getName() != null) {
             existingUser.setName(userDto.getName());
         }
