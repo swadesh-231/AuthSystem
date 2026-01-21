@@ -1,4 +1,4 @@
 package com.authsystem.service;
 
-public interface AuthService {
+public class AuthServiceImpl {
 }

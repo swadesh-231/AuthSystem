@@ -12,6 +12,5 @@ spring:
       ddl-auto: update
 
 
-logging:
-  level:
-    org.springframework.security: Debug
+
+
