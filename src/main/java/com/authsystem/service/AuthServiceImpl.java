@@ -8,6 +8,7 @@ import com.authsystem.entity.User;
 import com.authsystem.exception.BadRequestException;
 import com.authsystem.repository.UserRepository;
 import com.authsystem.security.jwt.JwtService;
+import com.authsystem.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public UserDto registerUser(SignUpRequest signUpRequest) {
@@ -44,9 +46,16 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User user = (User) authentication.getPrincipal();
-        String token = jwtService.generateToken(user);
-        return LoginResponse.builder()
-                .token(token)
-                .build();
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        return new LoginResponse(user.getId(),accessToken,refreshToken);
+    }
+
+    @Override
+    public LoginResponse refreshToken(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        User user  = customUserDetailsService.getUserById(userId);
+        String accessToken = jwtService.generateAccessToken(user);
+        return new LoginResponse(user.getId(),accessToken,refreshToken);
     }
 }

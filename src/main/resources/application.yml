@@ -14,6 +14,7 @@ spring:
 
 security:
   jwt:
-    secret: hxiweiydbrc387y3tyrv873tbrty8732nxy9ry239xer923
-    expiration: 120000
+    secret: hxiweiydbrc387y3tyrv873tbrty8732nxy9ry239xer923y83ycb4r83r8o4y3b9cyr98y3n8xyerc8989r98y38brcy89y238r
+    access-expiration: 900000        # 15 min
+    refresh-expiration: 604800000    # 7 days
 

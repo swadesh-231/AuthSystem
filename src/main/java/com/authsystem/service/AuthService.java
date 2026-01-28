@@ -8,4 +8,5 @@ import com.authsystem.dto.UserDto;
 public interface AuthService {
     UserDto registerUser(SignUpRequest signUpRequest);
     LoginResponse login(LoginRequest loginRequest);
+    LoginResponse refreshToken(String refreshToken);
 }

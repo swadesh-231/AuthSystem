@@ -19,15 +19,26 @@ import java.util.Set;
 public class JwtService {
     @Value("${security.jwt.secret}")
     private String secret;
-    @Value("${security.jwt.expiration}")
+    @Value("${security.jwt.access-expiration}")
     private Long expiration;
-    public String generateToken(User user) {
+    @Value("${security.jwt.refresh-expiration}")
+    private Long refreshExpiration;
+    public String generateAccessToken(User user) {
         return Jwts
                 .builder()
                 .subject(user.getId().toString())
                 .claim("role", Set.of("ADMIN","USER"))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis()+expiration))
+                .signWith(getSecretKey())
+                .compact();
+    }
+    public String generateRefreshToken(User user) {
+        return Jwts
+                .builder()
+                .subject(user.getId().toString())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis()+refreshExpiration))
                 .signWith(getSecretKey())
                 .compact();
     }
