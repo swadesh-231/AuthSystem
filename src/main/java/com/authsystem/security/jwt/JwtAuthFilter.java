@@ -28,6 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String requestHeader = request.getHeader("Authorization");
         if (requestHeader == null || !requestHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            return;
         }
         String token = requestHeader.split("Bearer ")[1];
         Long userId = jwtService.getUserIdFromToken(token);
